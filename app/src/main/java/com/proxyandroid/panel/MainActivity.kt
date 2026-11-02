@@ -43,15 +43,34 @@ class MainActivity : Activity() {
         }
     }
 
+    private val binderReceivedListener =
+        Shizuku.OnBinderReceivedListener {
+            runOnUiThread { refreshShizuku() }
+        }
+
+    private val binderDeadListener =
+        Shizuku.OnBinderDeadListener {
+            runOnUiThread { setStatus("Shizuku Offline", false) }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Shizuku.addRequestPermissionResultListener(permissionListener)
+        Shizuku.addBinderReceivedListenerSticky(binderReceivedListener)
+        Shizuku.addBinderDeadListener(binderDeadListener)
         buildScreen()
+        refreshShizuku()
+    }
+
+    override fun onResume() {
+        super.onResume()
         refreshShizuku()
     }
 
     override fun onDestroy() {
         Shizuku.removeRequestPermissionResultListener(permissionListener)
+        Shizuku.removeBinderReceivedListener(binderReceivedListener)
+        Shizuku.removeBinderDeadListener(binderDeadListener)
         super.onDestroy()
     }
 
