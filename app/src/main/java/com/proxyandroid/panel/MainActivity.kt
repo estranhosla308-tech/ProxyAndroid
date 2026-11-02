@@ -149,7 +149,7 @@ class MainActivity : Activity() {
         val scroll = ScrollView(this).apply {
             isFillViewport = true
             setBackgroundColor(bg)
-            addView(outer, ScrollView.LayoutParams(-1, -2))
+            addView(outer, android.view.ViewGroup.LayoutParams(-1, -2))
         }
 
         window.decorView.systemUiVisibility =
