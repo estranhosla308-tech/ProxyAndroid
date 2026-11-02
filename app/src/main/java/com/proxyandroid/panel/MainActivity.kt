@@ -1,5 +1,6 @@
 package com.proxyandroid.panel
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -156,6 +157,63 @@ class MainActivity : Activity() {
 
         window.statusBarColor = bg
         window.navigationBarColor = bg
+
+
+        // ANIMACOES PROXY ANDROID
+
+        // Entrada suave do painel
+        panel.alpha = 0f
+        panel.translationY = dp(18).toFloat()
+        panel.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .setDuration(850)
+            .start()
+
+        // Brilho roxo pulsante na borda
+        val borderAnimator = ValueAnimator.ofArgb(
+            Color.rgb(75, 15, 120),
+            Color.rgb(190, 50, 255)
+        ).apply {
+            duration = 1600
+            repeatCount = ValueAnimator.INFINITE
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener { animator ->
+                val drawable = panel.background as? GradientDrawable
+                drawable?.setStroke(dp(2), animator.animatedValue as Int)
+            }
+        }
+        borderAnimator.start()
+
+        // Botao INJETAR pulsante
+        ValueAnimator.ofFloat(1f, 1.035f).apply {
+            duration = 900
+            repeatCount = ValueAnimator.INFINITE
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener {
+                val scale = it.animatedValue as Float
+                inject.scaleX = scale
+                inject.scaleY = scale
+            }
+            start()
+        }
+
+        // Menu com movimento suave
+        ValueAnimator.ofFloat(0.94f, 1f).apply {
+            duration = 1100
+            repeatCount = ValueAnimator.INFINITE
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener {
+                val scale = it.animatedValue as Float
+                menu.scaleX = scale
+                menu.scaleY = scale
+            }
+            start()
+        }
+
+        // Entrada suave do cabecalho
+        header.alpha = 0f
+        header.animate().alpha(1f).setDuration(1000).start()
 
         setContentView(scroll)
     }
