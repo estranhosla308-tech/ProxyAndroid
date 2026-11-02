@@ -145,7 +145,18 @@ class MainActivity : Activity() {
         footer.setPadding(0, dp(18), 0, 0)
         outer.addView(footer)
 
-        val scroll = ScrollView(this).apply { addView(outer) }
+        val scroll = ScrollView(this).apply {
+            isFillViewport = true
+            setBackgroundColor(bg)
+            addView(outer, ScrollView.LayoutParams(-1, -2))
+        }
+
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_FULLSCREEN
+
+        window.statusBarColor = bg
+        window.navigationBarColor = bg
+
         setContentView(scroll)
     }
 
